@@ -54,6 +54,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CodeSnippetsPackage.cs" />
     <Compile Include="Frameworks\RelayCommand.cs" />
+    <Page Include="Styles\Buttons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Compile Include="Views\AddNewSnippetView.xaml.cs">
       <DependentUpon>AddNewSnippetView.xaml</DependentUpon>
     </Compile>

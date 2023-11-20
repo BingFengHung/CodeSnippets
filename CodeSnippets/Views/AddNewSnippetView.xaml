@@ -12,19 +12,29 @@
         </UserControl.DataContext>
 
         <UserControl.Resources>
-            <Style TargetType="TextBlock">
-                <Setter Property="FontSize" Value="15"/>
-                <Setter Property="Width" Value="70"/>
-                <Setter Property="Foreground" Value="Black" />
-            </Style>
+            <ResourceDictionary>
+                <ResourceDictionary.MergedDictionaries>
+                    <ResourceDictionary Source="pack://application:,,,/CodeSnippets;component/Styles/Buttons.xaml"/>
+                </ResourceDictionary.MergedDictionaries>
+                <Style TargetType="TextBlock">
 
-            <Style TargetType="TextBox">
-                <Setter Property="FontSize" Value="15"/>
-            </Style>
+
+                    <Setter Property="FontSize" Value="15"/>
+                    <Setter Property="Width" Value="70"/>
+                    <Setter Property="Foreground" Value="Black" />
+                </Style>
+
+                <Style TargetType="TextBox">
+                    <Setter Property="FontSize" Value="15"/>
+                </Style>
+            </ResourceDictionary>
 
         </UserControl.Resources>
 
-        <Border Background="White" Padding="5">
+        <Border Background="White" Padding="5"
+                CornerRadius="3"
+                BorderThickness="1" 
+                BorderBrush="#32323C">
             <StackPanel Orientation="Vertical" >
                 <TextBlock Text="Add New Snippet"
                        FontSize="20" Width="auto"
@@ -59,9 +69,15 @@
                     </StackPanel.Resources>
 
                     <Button Content="Add" Command="{Binding Confirm_Click}" 
-                            CommandParameter="{Binding Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            Style="{StaticResource AddButton}" 
+                            CommandParameter="{Binding Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            Width="70"
+                            Margin="5, 0"/>
 
-                    <Button Content="Cancel" Command="{Binding Cancel_Click}"/>
+                    <Button Content="Cancel" Command="{Binding Cancel_Click}"
+                            Style="{StaticResource DeleteButton}"
+                            Width="70"
+                            Margin="5, 0"/>
                 </StackPanel>
             </StackPanel>
         </Border>

@@ -12,58 +12,77 @@
     </UserControl.DataContext>
 
     <UserControl.Resources>
-        <converter:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-        <converter:GetChildContentConverter x:Key="GetChildContentConverter"/>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/CodeSnippets;component/Styles/Buttons.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
 
-        <Style TargetType="Button">
-            <Setter Property="Width" Value="80"/>
-        </Style>
+            <converter:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+            <converter:GetChildContentConverter x:Key="GetChildContentConverter"/>
 
-        <Style x:Key="TextBlockBase" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="Black"/>
-            <Setter Property="FontSize" Value="15"/>
-        </Style>
-        <!-- 子節點的模板 -->
-        <DataTemplate x:Key="ChildNodeTemplate">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{Binding Name}" Margin="0,0,5,0"
-                           Style="{StaticResource TextBlockBase}"
-                           ToolTip="{Binding Children, Converter={StaticResource GetChildContentConverter}}"/>
+            <Style x:Key="TextBlockBase" TargetType="TextBlock">
+                <Setter Property="Foreground" Value="Black"/>
+                <Setter Property="FontSize" Value="16"/>
+            </Style>
+            <!-- 子節點的模板 -->
+            <DataTemplate x:Key="ChildNodeTemplate">
+                <Grid MinWidth="250"
+                      Margin="0, 0, 0, 4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="{Binding Name}" Margin="0,0,3,0" 
+                               Style="{StaticResource TextBlockBase}" 
+                               ToolTip="{Binding Children, Converter={StaticResource GetChildContentConverter}}"/>
 
-                <Button Content="Insert" 
-                        Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}, Path=DataContext.InsertContent_Click}" 
-                        CommandParameter="{Binding}"
-                        Foreground="Green"
-                        />
+                    <Button Content="Insert" Grid.Column="1"
+                                Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}, Path=DataContext.InsertContent_Click}" 
+                                CommandParameter="{Binding}" 
+                                Style="{StaticResource AddButton}" />
 
-                <Button Content="Delete" 
-                        Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}, Path=DataContext.DeleteContent_Click}" 
-                        CommandParameter="{Binding}"
-                        Foreground="Red"/>
-            </StackPanel>
-        </DataTemplate>
+                    <Button Content="Delete"  Grid.Column="2"
+                                Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}, Path=DataContext.DeleteContent_Click}" 
+                                CommandParameter="{Binding}" 
+                                Style="{StaticResource DeleteButton}" />
+                </Grid>
+            </DataTemplate>
 
-        <!-- 父節點的模板 -->
-        <HierarchicalDataTemplate x:Key="ParentNodeTemplate" 
-                                  ItemsSource="{Binding Children}" 
-                                  ItemTemplate="{StaticResource ChildNodeTemplate}">
-            <TextBlock Text="{Binding Name}" ToolTip="{Binding Name}" 
-                       Style="{StaticResource TextBlockBase}" />
-        </HierarchicalDataTemplate>
+            <!-- 父節點的模板 -->
+            <HierarchicalDataTemplate x:Key="ParentNodeTemplate" 
+                                      ItemsSource="{Binding Children}" 
+                                      ItemTemplate="{StaticResource ChildNodeTemplate}">
+                <TextBlock Text="{Binding Name}" 
+                           ToolTip="{Binding Name}" 
+                           Style="{StaticResource TextBlockBase}" 
+                           FontSize="18"/>
+            </HierarchicalDataTemplate>
+        </ResourceDictionary>
     </UserControl.Resources>
-    <Grid>
+    <Grid Background="#e6e6f0">
         <Grid>
             <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition />
             </Grid.RowDefinitions>
             <StackPanel Orientation="Horizontal">
-                <Button Content="Add"
+                <Button Content="Add" Style="{StaticResource EditButton}"
+                        Width="80"
                         Command ="{Binding AddNewSnippet_Click}"/>
             </StackPanel>
-            <TreeView Grid.Row="1" 
-                  ItemsSource="{Binding Nodes}" 
-                  ItemTemplate="{StaticResource ParentNodeTemplate}">
+
+            <Ellipse Grid.Row="1" 
+                     Margin="0, 3, 0, 5"
+                     Height="1"
+                     Fill="#32323C"/>
+
+            <TreeView Grid.Row="2" 
+                      Background="#e6e6f0"
+                      BorderThickness="0"
+                      ItemsSource="{Binding Nodes}" 
+                      ItemTemplate="{StaticResource ParentNodeTemplate}">
             </TreeView>
         </Grid>
 

@@ -23,7 +23,7 @@ namespace CodeSnippets
         /// </summary>
         public CodeSnippetsToolWindow() : base(null)
         {
-            this.Caption = "CodeSnippetsToolWindow";
+            this.Caption = "CodeSnippets";
 
             // This is the user control hosted by the tool window; Note that, even if this class implements IDisposable,
             // we are not calling Dispose on this object. This is because ToolWindowPane calls Dispose on
