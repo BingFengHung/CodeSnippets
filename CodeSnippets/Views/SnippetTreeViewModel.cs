@@ -19,47 +19,17 @@ namespace CodeSnippets.Views
 
         public SnippetTreeViewModel()
         {
-            Initial();
-
-            _topics = GetSnippets();
-
-            Nodes = new ObservableCollection<TreeNode>();
-            foreach (var topic in _topics)
-            {
-                var node = new TreeNode();
-                node.Name = topic.Title;
-
-                var child = new ObservableCollection<TreeNode>();
-                for (var i = 0; i < topic.Topic.Count; i++)
-                {
-                    child.Add(new TreeNode
-                    {
-                        Name = topic.Topic[i].Title,
-                        Children = new ObservableCollection<TreeNode>
-                        {
-                            new TreeNode
-                            {
-                                Name = topic.Topic[i].Title,
-                                Children = topic.Topic[i].Content, //new ObservableCollection<TreeNode>{
-                                    //new TreeNode {
-                                        //Name=topic.Topic[i].Content
-                                    //}
-                                //}
-                            }
-                    }
-                    });
-                }
-
-                node.Children = child;
-
-                Nodes.Add(node);
-            }
-
+            InitialList();
 
             AddModel = new AddModel();
         }
 
-        public ObservableCollection<TreeNode> Nodes { get; set; }
+        private ObservableCollection<TreeNode> _nodes;
+        public ObservableCollection<TreeNode> Nodes
+        {
+            get => _nodes;
+            set => Set(ref _nodes, value);
+        }
 
         private AddModel _addModel;
         public AddModel AddModel
@@ -73,6 +43,43 @@ namespace CodeSnippets.Views
         {
             get => _isAddPanelVsb;
             set => Set(ref _isAddPanelVsb, value);
+        }
+
+        private void InitialList()
+        {
+            Initial();
+
+            _topics = GetSnippets();
+
+            Nodes = new ObservableCollection<TreeNode>();
+            foreach (var topic in _topics)
+            {
+                var node = new TreeNode();
+                node.Name = topic.Topic;
+
+                var child = new ObservableCollection<TreeNode>();
+                for (var i = 0; i < topic.Items.Count; i++)
+                {
+                    child.Add(new TreeNode
+                    {
+                        Topic = topic.Topic,
+                        Name = topic.Items[i].Title,
+                        Children = new ObservableCollection<TreeNode>
+                        {
+                            new TreeNode
+                            {
+                                Topic = topic.Topic,
+                                Name = topic.Items[i].Title,
+                                Children = topic.Items[i].Content,
+                            }
+                        }
+                    });
+                }
+
+                node.Children = child;
+
+                Nodes.Add(node);
+            }
         }
 
         private void InsertSnippetCode(string code)
@@ -123,8 +130,48 @@ namespace CodeSnippets.Views
 
         public RelayCommand DeleteContent_Click => new RelayCommand(x =>
         {
+            var node = (TreeNode)x;
 
+            var list = ConvertNodeToList();
+
+            var result = System.Windows.MessageBox.Show("Delete Content?", "Delete", System.Windows.MessageBoxButton.YesNo);
+
+            if (result == System.Windows.MessageBoxResult.Yes)
+            {
+                var find = list.Where(s => s.Topic == node.Topic).FirstOrDefault();
+
+                if (find != null)
+                {
+                    //list.Remove(find);
+                    var item = find.Items.Where(y => y.Title == node.Name).FirstOrDefault();
+                    find.Items.Remove(item);
+                    //list.Add(find);
+
+                    Save(list);
+                    //InitialList();
+
+                    RemoveNodeItem(node);
+                }
+                else
+                {
+                    System.Windows.MessageBox.Show("Not found content");
+                }
+            }
         });
+
+        private void RemoveNodeItem(TreeNode node)
+        {
+            var nodes = Nodes.Where(x => x.Name == node.Topic).FirstOrDefault();
+            if (nodes != null)
+            {
+                var target = ((ObservableCollection<TreeNode>)nodes.Children).Where(x => x.Name == node.Name).FirstOrDefault();
+
+                if (target != null)
+                {
+                    ((ObservableCollection<TreeNode>)nodes.Children).Remove(target);
+                }
+            }
+        }
 
         public RelayCommand AddNewSnippet_Click => new RelayCommand(x =>
         {
@@ -133,20 +180,17 @@ namespace CodeSnippets.Views
 
         public RelayCommand AddConfirm_Click => new RelayCommand(x =>
         {
-
             AddModel model = AddModel;
 
             var list = ConvertNodeToList();
 
-            var find = list.Where(s => s.Title == model.Topic).FirstOrDefault();
+            var find = list.Where(s => s.Topic == model.Topic).FirstOrDefault();
 
             if (find != null)
             {
-
-
-                find.Topic.Add(new Snippet
+                find.Items.Add(new Snippet
                 {
-                    Title = model.Topic,
+                    Title = model.Title,
                     Content = model.Content,
                 });
             }
@@ -154,15 +198,20 @@ namespace CodeSnippets.Views
             {
                 list.Add(new SnippetTopic
                 {
-                    Title = model.Topic,
-                    Topic = new List<Snippet>
-                {
-                    new Snippet{ Content = model.Content },
-                }
+                    Topic = model.Topic,
+                    Items = new List<Snippet>
+                    {
+                        new Snippet{
+                            Title= model.Title,
+                            Content = model.Content
+                        },
+                    }
                 });
             }
 
             Save(list);
+
+            InitialList();
 
             IsAddPanelVsb = false;
         });
@@ -220,12 +269,12 @@ namespace CodeSnippets.Views
             foreach (var node in Nodes)
             {
                 var topic = new SnippetTopic();
-                topic.Title = node.Name;
-                topic.Topic = new List<Snippet>();
+                topic.Topic = node.Name;
+                topic.Items = new List<Snippet>();
 
                 foreach (var n in node.Children as ObservableCollection<TreeNode>)
                 {
-                    topic.Topic.Add(new Snippet
+                    topic.Items.Add(new Snippet
                     {
                         Title = n.Name,
                         Content = (string)((ObservableCollection<TreeNode>)n.Children)[0].Children
@@ -256,9 +305,9 @@ namespace CodeSnippets.Views
 
     class SnippetTopic
     {
-        public string Title { get; set; }
+        public string Topic { get; set; }
 
-        public List<Snippet> Topic { get; set; }
+        public List<Snippet> Items { get; set; }
     }
 
     class Snippet

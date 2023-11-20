@@ -35,13 +35,18 @@
 
                 </StackPanel>
 
+                <StackPanel Orientation="Horizontal" Margin="0, 5">
+                    <TextBlock Text="Title:" />
+                    <TextBox Text="{Binding Result.Title, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="150"/>
+                </StackPanel>
+
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Content:" />
-                    <TextBox Text="{Binding Result.Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="150"
-                     AcceptsReturn="True"
-                     VerticalScrollBarVisibility="Auto"
-                     HorizontalScrollBarVisibility="Auto"
-                     Height="200"/>
+                    <TextBox Text="{Binding Result.Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="150" 
+                             AcceptsReturn="True" 
+                             VerticalScrollBarVisibility="Auto" 
+                             HorizontalScrollBarVisibility="Auto" 
+                             Height="200"/>
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" Margin="0, 5, 0, 3"
@@ -53,7 +58,9 @@
                         </Style>
                     </StackPanel.Resources>
 
-                    <Button Content="Add" Command="{Binding Confirm_Click}" CommandParameter="{Binding Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Button Content="Add" Command="{Binding Confirm_Click}" 
+                            CommandParameter="{Binding Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
                     <Button Content="Cancel" Command="{Binding Cancel_Click}"/>
                 </StackPanel>
             </StackPanel>
