@@ -88,10 +88,11 @@
 
         <Grid Visibility="{Binding IsAddPanelVsb, Converter={StaticResource BooleanToVisibilityConverter }}">
             <Border Background="#1E1E28" Opacity=".3"/>
-            <local:AddNewSnippetView HorizontalAlignment="Center"
-                                     VerticalAlignment="Center"
-                                     ConfirmCommand="{Binding AddConfirm_Click}" ConfirmCommandParameter="{Binding AddModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                     CancelCommand="{Binding AddCancel_Click}" />
+            <local:AddNewSnippetView VerticalAlignment="Center"
+                                     ConfirmCommand="{Binding AddConfirm_Click}" 
+                                     ConfirmCommandParameter="{Binding AddModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                     CancelCommand="{Binding AddCancel_Click}" 
+                                     Margin="30, 0"/>
         </Grid>
     </Grid>
 </UserControl>

@@ -17,8 +17,6 @@
                     <ResourceDictionary Source="pack://application:,,,/CodeSnippets;component/Styles/Buttons.xaml"/>
                 </ResourceDictionary.MergedDictionaries>
                 <Style TargetType="TextBlock">
-
-
                     <Setter Property="FontSize" Value="15"/>
                     <Setter Property="Width" Value="70"/>
                     <Setter Property="Foreground" Value="Black" />
@@ -26,6 +24,7 @@
 
                 <Style TargetType="TextBox">
                     <Setter Property="FontSize" Value="15"/>
+                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
                 </Style>
             </ResourceDictionary>
 
@@ -36,28 +35,45 @@
                 BorderThickness="1" 
                 BorderBrush="#32323C">
             <StackPanel Orientation="Vertical" >
-                <TextBlock Text="Add New Snippet"
-                       FontSize="20" Width="auto"
-                       HorizontalAlignment="Center"/>
-                <StackPanel Orientation="Horizontal" Margin="0, 5">
+                <TextBlock Text="Add New Snippet" 
+                           FontSize="20" Width="auto" 
+                           HorizontalAlignment="Center"/>
+                <Grid Margin="0, 5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
                     <TextBlock Text="Topic:" />
-                    <TextBox Text="{Binding Result.Topic, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="150"/>
+                    <TextBox Grid.Column="1" 
+                             Text="{Binding Result.Topic, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
-                </StackPanel>
+                </Grid>
 
-                <StackPanel Orientation="Horizontal" Margin="0, 5">
+                <Grid Margin="0, 5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
                     <TextBlock Text="Title:" />
-                    <TextBox Text="{Binding Result.Title, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="150"/>
-                </StackPanel>
+                    <TextBox Grid.Column="1" 
+                             Text="{Binding Result.Title, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                </Grid>
 
-                <StackPanel Orientation="Horizontal">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
                     <TextBlock Text="Content:" />
-                    <TextBox Text="{Binding Result.Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="150" 
+                    <TextBox Grid.Column="1" 
+                             Text="{Binding Result.Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                              AcceptsReturn="True" 
+                             HorizontalAlignment="Stretch"
                              VerticalScrollBarVisibility="Auto" 
                              HorizontalScrollBarVisibility="Auto" 
-                             Height="200"/>
-                </StackPanel>
+                             Height="200"
+                             />
+                </Grid>
 
                 <StackPanel Orientation="Horizontal" Margin="0, 5, 0, 3"
                         HorizontalAlignment="Center">
