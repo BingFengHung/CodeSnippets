@@ -3,7 +3,7 @@
     <Metadata>
         <Identity Id="CodeSnippets.779035d1-d53f-42df-98ff-0a729678153f" Version="1.0" Language="en-US" Publisher="bingfeng" />
         <DisplayName>CodeSnippets</DisplayName>
-        <Description xml:space="preserve">視覺化的 CodeSnippets 編輯器視覺化的 CodeSnippets ㄍ</Description>
+        <Description xml:space="preserve">視覺化的 CodeSnippets 編輯器視覺化的 CodeSnippets</Description>
     </Metadata>
     <Installation>
         <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[17.0, 18.0)">
